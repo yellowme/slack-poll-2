@@ -14,7 +14,7 @@ func TestCreatePoll(t *testing.T) {
 	pollRepository := test.TestUserRepository{}
 
 	poll := CreatePoll(pollRepository, question, options)
-	expectedPoll := entity.Poll{question, options}
+	expectedPoll := entity.Poll{Question: question, Options: options}
 
 	assert.Equal(t, poll, expectedPoll)
 }

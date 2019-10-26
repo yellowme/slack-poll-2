@@ -5,6 +5,6 @@ import (
 )
 
 func CreatePoll(pollRepository PollRepository, question string, options []string) entity.Poll {
-	poll := pollRepository.Create(entity.Poll{question, options})
+	poll := pollRepository.Create(entity.Poll{Question: question, Options: options})
 	return poll
 }
