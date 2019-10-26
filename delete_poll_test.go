@@ -10,11 +10,11 @@ import (
 func TestDeletePoll(t *testing.T) {
 	question := "Test question?"
 	options := []string{"Option 1", "Option 2"}
-	pollRepository := test.TestUserRepository{}
+	pollService := test.TestPollService{}
 
-	poll := CreatePoll(pollRepository, question, options)
-	expectedPoll := DeletePoll(pollRepository, poll.ID)
-	emptyPolls := GetPolls(pollRepository, poll.ID)
+	poll := CreatePoll(pollService, question, options)
+	expectedPoll := DeletePoll(pollService, poll.ID)
+	emptyPolls := GetPolls(pollService, poll.ID)
 
 	assert.Equal(t, poll, expectedPoll)
 	assert.Empty(t, emptyPolls)

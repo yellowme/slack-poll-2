@@ -8,13 +8,16 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestCreatePoll(t *testing.T) {
+func TestUpsertPollAnswer(t *testing.T) {
 	question := "Test question?"
 	options := []string{"Option 1", "Option 2"}
+	expectedPollAnswer := entity.PollAnswer{Option: "Option 1"}
 	pollService := test.TestPollService{}
 
 	poll := CreatePoll(pollService, question, options)
-	expectedPoll := entity.Poll{ID: poll.ID, Question: question, Options: options}
+	expectedPollAnswer.Poll = poll
 
-	assert.Equal(t, poll, expectedPoll)
+	pollAnswer := UpsertPollAnswer(pollService, poll.ID, "Option 1")
+
+	assert.Equal(t, pollAnswer, expectedPollAnswer)
 }

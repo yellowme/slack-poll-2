@@ -10,10 +10,10 @@ import (
 func TestGetPolls(t *testing.T) {
 	question := "Test question?"
 	options := []string{"Option 1", "Option 2"}
-	pollRepository := test.TestUserRepository{}
+	pollService := test.TestPollService{}
 
-	createdPoll := CreatePoll(pollRepository, question, options)
-	poll := GetPolls(pollRepository, createdPoll.ID)
+	createdPoll := CreatePoll(pollService, question, options)
+	poll := GetPolls(pollService, createdPoll.ID)
 
 	assert.Equal(t, poll, createdPoll)
 }
