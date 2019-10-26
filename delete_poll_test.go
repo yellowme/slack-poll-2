@@ -3,18 +3,19 @@ package core
 import (
 	"testing"
 
-	"github.com/jerolan/slack-poll/core/entity"
 	"github.com/jerolan/slack-poll/test"
 	"github.com/stretchr/testify/assert"
 )
 
-func TestCreatePoll(t *testing.T) {
+func TestDeletePoll(t *testing.T) {
 	question := "Test question?"
 	options := []string{"Option 1", "Option 2"}
 	pollRepository := test.TestUserRepository{}
 
 	poll := CreatePoll(pollRepository, question, options)
-	expectedPoll := entity.Poll{ID: poll.ID, Question: question, Options: options}
+	expectedPoll := DeletePoll(pollRepository, poll.ID)
+	emptyPolls := GetPolls(pollRepository, poll.ID)
 
 	assert.Equal(t, poll, expectedPoll)
+	assert.Empty(t, emptyPolls)
 }

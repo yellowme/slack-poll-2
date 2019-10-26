@@ -8,6 +8,7 @@ const (
 )
 
 type Poll struct {
+	ID       string
 	Question string
 	Owner    string
 	Channel  string
