@@ -1,7 +1,8 @@
 package entity
 
 type PollAnswer struct {
+	ID     string
 	Option string
 	Owner  string
-	Poll   Poll
+	PollID string
 }
