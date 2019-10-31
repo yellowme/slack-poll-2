@@ -1,4 +1,4 @@
-package webserver
+package utils
 
 import (
 	"strings"
@@ -6,7 +6,7 @@ import (
 	"github.com/jerolan/slack-poll/core/entity"
 )
 
-func ConvertCommandToStruct(command string) (poll entity.Poll) {
+func ConvertCommandToPoll(command string) (poll entity.Poll) {
 	sanitizedCommand := removeDoubleCuotes(command)
 	poll.Mode = entity.PollModeSingle
 

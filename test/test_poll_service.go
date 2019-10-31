@@ -12,7 +12,7 @@ type TestPollService struct{}
 func (tps TestPollService) GetPollByID(pollID string) (entity.Poll, error) {
 	var poll entity.Poll
 
-	err := TestDatabase.Where("id = ?", pollID).First(&poll).Error
+	err := TestDatabase.DB.Where("id = ?", pollID).First(&poll).Error
 
 	if err != nil {
 		return poll, err
@@ -30,7 +30,7 @@ func (tps TestPollService) CreatePoll(poll *entity.Poll) error {
 		Mode:     poll.Mode.String(),
 	}
 
-	err := TestDatabase.Create(&createdPoll).Error
+	err := TestDatabase.DB.Create(&createdPoll).Error
 	if err != nil {
 		return err
 	}
@@ -41,7 +41,7 @@ func (tps TestPollService) CreatePoll(poll *entity.Poll) error {
 }
 
 func (tps TestPollService) DeletePoll(pollID string) error {
-	err := TestDatabase.Where("id = ?", pollID).Delete(&PollModel{}).Error
+	err := TestDatabase.DB.Where("id = ?", pollID).Delete(&PollModel{}).Error
 
 	if err != nil {
 		return err
@@ -52,7 +52,7 @@ func (tps TestPollService) DeletePoll(pollID string) error {
 
 func (tps TestPollService) FindPollAnswers(pollID string) ([]entity.PollAnswer, error) {
 	var pollAnswers []entity.PollAnswer
-	err := TestDatabase.Where("poll_id = ?", pollID).Find(&pollAnswers).Error
+	err := TestDatabase.DB.Where("poll_id = ?", pollID).Find(&pollAnswers).Error
 
 	if err != nil {
 		return pollAnswers, err
@@ -68,7 +68,7 @@ func (tps TestPollService) CreatePollAnswer(pollAnswer *entity.PollAnswer) error
 		PollID: pollAnswer.PollID,
 	}
 
-	err := TestDatabase.Create(&createdPollAnswer).Error
+	err := TestDatabase.DB.Create(&createdPollAnswer).Error
 	if err != nil {
 		return err
 	}
@@ -77,7 +77,7 @@ func (tps TestPollService) CreatePollAnswer(pollAnswer *entity.PollAnswer) error
 }
 
 func (tps TestPollService) DeletePollAnswer(pollAnswerID string) error {
-	err := TestDatabase.Where("id = ?", pollAnswerID).Delete(&PollAnswerModel{}).Error
+	err := TestDatabase.DB.Where("id = ?", pollAnswerID).Delete(&PollAnswerModel{}).Error
 
 	if err != nil {
 		return err

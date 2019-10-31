@@ -12,10 +12,10 @@ type GinServer struct {
 }
 
 func CreateServer(port int, mode GinServerMode) *GinServer {
-	server := &GinServer{}
-	server.port = port
-
-	server.Router = gin.New()
+	server := &GinServer{
+		port:   port,
+		Router: gin.New(),
+	}
 
 	switch mode {
 	case DebugMode:
@@ -27,6 +27,8 @@ func CreateServer(port int, mode GinServerMode) *GinServer {
 	}
 
 	server.Router.Use(gin.Recovery())
+
+	SetUpPollHanlder(server.Router)
 
 	return server
 }

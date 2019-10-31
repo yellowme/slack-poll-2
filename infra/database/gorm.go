@@ -5,29 +5,21 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
 
-var Database *gorm.DB
+var Database *GormDatabase
 
-type PollModel struct {
-	ID       string
-	Question string
-	Owner    string
-	Options  string
-	Mode     string
+type GormDatabase struct {
+	DB *gorm.DB
 }
 
-type PollAnswerModel struct {
-	ID     string
-	Option string
-	Owner  string
-	Poll   PollModel
-	PollID string
-}
-
-func InitializeTestDatabase() *gorm.DB {
+func InitializeDatabase() *GormDatabase {
 	db, err := gorm.Open("sqlite3", "poll.db")
 
 	if err != nil {
 		panic("failed to connect database")
+	}
+
+	GormDatabase := &GormDatabase{
+		DB: db,
 	}
 
 	defer db.Close()
@@ -35,6 +27,6 @@ func InitializeTestDatabase() *gorm.DB {
 	// Migrate the schema
 	db.AutoMigrate(&PollModel{})
 	db.AutoMigrate(&PollAnswerModel{})
-	Database = db
-	return Database
+
+	return GormDatabase
 }

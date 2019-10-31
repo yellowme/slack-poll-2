@@ -1,11 +1,12 @@
 package test
 
 import (
+	"github.com/jerolan/slack-poll/infra/database"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
 
-var TestDatabase *gorm.DB
+var TestDatabase *database.GormDatabase
 
 type PollModel struct {
 	ID       string
@@ -23,7 +24,7 @@ type PollAnswerModel struct {
 	PollID string
 }
 
-func InitializeTestDatabase() {
+func InitializeTestDatabase() *database.GormDatabase {
 	db, err := gorm.Open("sqlite3", "poll_test.db")
 
 	if err != nil {
@@ -35,5 +36,10 @@ func InitializeTestDatabase() {
 	// Migrate the schema
 	db.AutoMigrate(&PollModel{})
 	db.AutoMigrate(&PollAnswerModel{})
-	TestDatabase = db
+
+	TestDatabase = &database.GormDatabase{
+		DB: db,
+	}
+
+	return TestDatabase
 }
