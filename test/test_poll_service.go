@@ -3,16 +3,25 @@ package test
 import (
 	"strings"
 
-	"github.com/jerolan/slack-poll/core/entity"
+	"github.com/jerolan/slack-poll/domain/entity"
+	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
 
-type TestPollService struct{}
+type testPollService struct {
+	gormDB *gorm.DB
+}
 
-func (tps TestPollService) GetPollByID(pollID string) (entity.Poll, error) {
+func NewTestPollService(gormDB *gorm.DB) *testPollService {
+	return &testPollService{
+		gormDB: gormDB,
+	}
+}
+
+func (tps *testPollService) GetPollByID(pollID string) (entity.Poll, error) {
 	var poll entity.Poll
 
-	err := TestDatabase.DB.Where("id = ?", pollID).First(&poll).Error
+	err := tps.gormDB.Where("id = ?", pollID).First(&poll).Error
 
 	if err != nil {
 		return poll, err
@@ -21,7 +30,7 @@ func (tps TestPollService) GetPollByID(pollID string) (entity.Poll, error) {
 	return poll, nil
 }
 
-func (tps TestPollService) CreatePoll(poll *entity.Poll) error {
+func (tps *testPollService) CreatePoll(poll *entity.Poll) error {
 	createdPoll := PollModel{
 		ID:       poll.ID,
 		Question: poll.Question,
@@ -30,7 +39,7 @@ func (tps TestPollService) CreatePoll(poll *entity.Poll) error {
 		Mode:     poll.Mode.String(),
 	}
 
-	err := TestDatabase.DB.Create(&createdPoll).Error
+	err := tps.gormDB.Create(&createdPoll).Error
 	if err != nil {
 		return err
 	}
@@ -40,8 +49,8 @@ func (tps TestPollService) CreatePoll(poll *entity.Poll) error {
 	return nil
 }
 
-func (tps TestPollService) DeletePoll(pollID string) error {
-	err := TestDatabase.DB.Where("id = ?", pollID).Delete(&PollModel{}).Error
+func (tps *testPollService) DeletePoll(pollID string) error {
+	err := tps.gormDB.Where("id = ?", pollID).Delete(&PollModel{}).Error
 
 	if err != nil {
 		return err
@@ -50,9 +59,9 @@ func (tps TestPollService) DeletePoll(pollID string) error {
 	return nil
 }
 
-func (tps TestPollService) FindPollAnswers(pollID string) ([]entity.PollAnswer, error) {
+func (tps *testPollService) FindPollAnswers(pollID string) ([]entity.PollAnswer, error) {
 	var pollAnswers []entity.PollAnswer
-	err := TestDatabase.DB.Where("poll_id = ?", pollID).Find(&pollAnswers).Error
+	err := tps.gormDB.Where("poll_id = ?", pollID).Find(&pollAnswers).Error
 
 	if err != nil {
 		return pollAnswers, err
@@ -61,14 +70,14 @@ func (tps TestPollService) FindPollAnswers(pollID string) ([]entity.PollAnswer, 
 	return pollAnswers, nil
 }
 
-func (tps TestPollService) CreatePollAnswer(pollAnswer *entity.PollAnswer) error {
+func (tps *testPollService) CreatePollAnswer(pollAnswer *entity.PollAnswer) error {
 	createdPollAnswer := PollAnswerModel{
 		Option: pollAnswer.Option,
 		Owner:  pollAnswer.Owner,
 		PollID: pollAnswer.PollID,
 	}
 
-	err := TestDatabase.DB.Create(&createdPollAnswer).Error
+	err := tps.gormDB.Create(&createdPollAnswer).Error
 	if err != nil {
 		return err
 	}
@@ -76,8 +85,8 @@ func (tps TestPollService) CreatePollAnswer(pollAnswer *entity.PollAnswer) error
 	return nil
 }
 
-func (tps TestPollService) DeletePollAnswer(pollAnswerID string) error {
-	err := TestDatabase.DB.Where("id = ?", pollAnswerID).Delete(&PollAnswerModel{}).Error
+func (tps *testPollService) DeletePollAnswer(pollAnswerID string) error {
+	err := tps.gormDB.Where("id = ?", pollAnswerID).Delete(&PollAnswerModel{}).Error
 
 	if err != nil {
 		return err

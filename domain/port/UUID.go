@@ -1,5 +1,5 @@
 package port
 
-type UUID interface {
+type UUIDPort interface {
 	Generate() string
 }

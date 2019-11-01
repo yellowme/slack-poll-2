@@ -2,9 +2,13 @@ package adapter
 
 import uuid "github.com/satori/go.uuid"
 
-type UUID struct{}
+type goid struct{}
 
-func (u UUID) Generate() string {
+func NewUUID() *goid {
+	return &goid{}
+}
+
+func (u *goid) Generate() string {
 	uuid := uuid.NewV4()
 	return uuid.String()
 }

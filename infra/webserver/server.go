@@ -28,7 +28,7 @@ func CreateServer(port int, mode GinServerMode) *GinServer {
 
 	server.Router.Use(gin.Recovery())
 
-	SetUpPollHanlder(server.Router)
+	server.SetupPollHandler()
 
 	return server
 }

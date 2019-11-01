@@ -3,7 +3,7 @@ package utils
 import (
 	"strings"
 
-	"github.com/jerolan/slack-poll/core/entity"
+	"github.com/jerolan/slack-poll/domain/entity"
 )
 
 func ConvertCommandToPoll(command string) (poll entity.Poll) {

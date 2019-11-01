@@ -1,6 +1,6 @@
 package service
 
-import "github.com/jerolan/slack-poll/core/entity"
+import "github.com/jerolan/slack-poll/domain/entity"
 
 type PollService interface {
 	GetPollByID(pollID string) (entity.Poll, error)

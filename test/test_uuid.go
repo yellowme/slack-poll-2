@@ -2,9 +2,13 @@ package test
 
 import uuid "github.com/satori/go.uuid"
 
-type UUID struct{}
+type TestUUIDPort struct{}
 
-func (u UUID) Generate() string {
+func NewTestUUIDPort() *TestUUIDPort {
+	return &TestUUIDPort{}
+}
+
+func (u *TestUUIDPort) Generate() string {
 	uuid := uuid.NewV4()
 	return uuid.String()
 }
